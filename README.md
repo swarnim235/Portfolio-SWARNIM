@@ -1,9 +1,9 @@
-# mohitvirli.github.io
-Hello there! I'm Mohit Virli, frontend engineer by profession, a creative at heart.
+# Swarnim Bastola Portfolio
+Hello there! I'm Swarnim Bastola, frontend developer and creative technologist.
 
-This the updated version of my personal website which is now in 3D. LFG!
+This is the 3D version of my personal website built with modern web tools.
 
-Checkout the live version at [mohitvirli.github.io](https://mohitvirli.github.io/)
+Live demo available at [swarnimbastola.com.np](https://swarnimbastola.com.np)
 
 ## Tech Stack
 

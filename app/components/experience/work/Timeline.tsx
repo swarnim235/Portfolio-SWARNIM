@@ -65,10 +65,22 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
 const Timeline = ({ progress }: { progress: number }) => {
   const { camera } = useThree();
   const isActive = usePortalStore((state) => state.activePortalId === 'work');
-  const timeline = useMemo(() => WORK_TIMELINE, []);
+  const timeline = useMemo(() => WORK_TIMELINE || [], []);
 
-  const curve = useMemo(() => new THREE.CatmullRomCurve3(timeline.map(p => p.point), false), [timeline]);
-  const curvePoints = useMemo(() => curve.getPoints(500), [curve]);
+  const curve = useMemo(() => {
+    if (timeline.length < 2) return null;
+    return new THREE.CatmullRomCurve3(timeline.map(p => p.point), false);
+  }, [timeline]);
+
+  const curvePoints = useMemo(() => {
+    if (!curve) return [];
+    try {
+      return curve.getPoints(500);
+    } catch {
+      return [];
+    }
+  }, [curve]);
+
   const visibleCurvePoints = useMemo(() => curvePoints.slice(0, Math.max(1, Math.ceil(progress * curvePoints.length))), [curvePoints, progress]);
   const visibleTimelinePoints = useMemo(() => timeline.slice(0, Math.max(1, Math.round(progress * (timeline.length - 1) + 1))), [timeline, progress]);
 
@@ -76,7 +88,7 @@ const Timeline = ({ progress }: { progress: number }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useFrame((_, delta) => {
-    if (isActive) {
+    if (isActive && curve) {
       const position = curve.getPoint(progress);
       camera.position.x = THREE.MathUtils.damp(camera.position.x, (isMobile ? -1 : -2) + position.x, 4, delta);
       camera.position.y = THREE.MathUtils.damp(camera.position.y, -39 + position.z, 4, delta);

@@ -9,7 +9,6 @@ import { isMobile } from "react-device-detect";
 
 import { useThemeStore } from "@stores";
 
-import AwwardsBadge from "./AwwardsBadge";
 import Preloader from "./Preloader";
 import ProgressLoader from "./ProgressLoader";
 import { ScrollHint } from "./ScrollHint";
@@ -31,14 +30,10 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
     overflow: "hidden",
   });
 
+  // only apply a fixed inset for desktop devices; width/height will be handled by CSS
   useEffect(() => {
     if (!isMobile) {
-      const borderStyle = {
-        inset: '1rem',
-        width: 'calc(100% - 2rem)',
-        height: 'calc(100% - 2rem)',
-      };
-      setCanvasStyle({ ...canvasStyle, ...borderStyle})
+      setCanvasStyle(prev => ({ ...prev, inset: '1rem' }));
     }
   }, [isMobile]);
 
@@ -67,6 +62,27 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
     backgroundSize: "100px",
   };
 
+  // wait until we've mounted and measured the container before instantiating the WebGL canvas
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // render empty wrappers during SSR / initial mount
+    return (
+      <div className="h-[100dvh] wrapper relative">
+        <div className="h-[100dvh] relative" ref={ref} />
+      </div>
+    );
+  }
+
+  const safeDpr = (() => {
+    if (typeof window === 'undefined') return 1;
+    const ratio = window.devicePixelRatio || 1;
+    return Math.max(1, Math.min(ratio, 2));
+  })();
+
   return (
     <div className="h-[100dvh] wrapper relative">
       <div className="h-[100dvh] relative" ref={ref}>
@@ -74,7 +90,7 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
           shadows
           style={canvasStyle}
           ref={canvasRef}
-          dpr={[1, 2]}>
+          dpr={safeDpr}>
           {/* <Perf/> */}
           <Suspense fallback={null}>
             <ambientLight intensity={0.5} />
@@ -90,7 +106,6 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
         </Canvas>
         <ProgressLoader progress={progress} />
       </div>
-      <AwwardsBadge />
       <ThemeSwitcher />
       <ScrollHint />
     </div>

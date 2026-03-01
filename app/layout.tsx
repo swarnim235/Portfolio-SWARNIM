@@ -14,12 +14,12 @@ const vercettiFont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Mohit Virli ✌️",
+  title: "Swarnim Bastola ✌️",
   description: "A frontend developer by profession, a creative at heart.",
-  keywords: "Mohit Virli, Frontend Engineer, React Developer, Three.js, Creative Developer, Web Development, Angular, JavaScript, TypeScript, Portfolio",
-  authors: [{ name: "Mohit Virli" }],
-  creator: "Mohit Virli",
-  publisher: "Mohit Virli",
+  keywords: "Swarnim Bastola, Frontend Engineer, React Developer, Three.js, Creative Developer, Web Development, Angular, JavaScript, TypeScript, Portfolio",
+  authors: [{ name: "Swarnim Bastola" }],
+  creator: "Swarnim Bastola",
+  publisher: "Swarnim Bastola",
   formatDetection: {
     email: false,
     address: false,
@@ -36,20 +36,20 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Mohit Virli - Frontend Engineer",
+    title: "Swarnim Bastola - Frontend Engineer",
     description: "Frontend engineer by profession, creative at heart.",
-    url: "https://mohitvirli.github.io",
-    siteName: "Mohit Virli's Portfolio",
+    url: "https://yourportfoliosite.com", // Update with your actual URL
+    siteName: "Swarnim Bastola's Portfolio",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mohit Virli - Frontend Engineer",
+    title: "Swarnim Bastola - Frontend Engineer",
     description: "Frontend engineer by profession, creative at heart.",
   },
   verification: {
-    google: "GsRYY-ivL0F_VKkfs5KAeToliqz0gCrRAJKKmFkAxBA",
+    google: "YOUR_GOOGLE_VERIFICATION_CODE", // Replace with your code
   },
 };
 
@@ -72,7 +72,7 @@ export default function RootLayout({
       >
         {children}
       </body>
-      <GoogleAnalytics gaId={'G-7WD4HM3XRE'}/>
+      <GoogleAnalytics gaId={'YOUR_GOOGLE_ANALYTICS_ID'}/>
     </html>
   );
 }
